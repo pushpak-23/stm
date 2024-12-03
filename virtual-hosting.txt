@@ -1,0 +1,59 @@
+Enable virtual hosting in nginx.conf:
+
+mkdir /etc/nginx/{sites-available, sites-enabled}
+vim /etc/nginx/nginx.conf
+
+include /etc/nginx/sites-enabled/*.conf          <<<<<<<<<< Add this
+
+
+1) Setting Up New Document Root Directories & sample HTML pages
+````````````````````````````````````````````````````````````````
+# mkdir /usr/share/nginx/html <<<< Main DNS (hpcsa.com)
+# cat > /usr/share/nginx/html/index.html
+<h1> Hpcsa main server </h1>
+# mkdir /usr/share/nginx/html/abc.com <<<< Virtual DNS (abc.com)
+# cat > /usr/share/nginx/html/abc.com/index.html
+<h1> ABC vhost main server </h1>
+
+2) Creating the Server config for vhosts:
+``````````````````````````````````````````
+a) hpcsa.conf [Creating the MAIN Server config]
+```````````````````````````````````````````````````
+# cat /etc/nginx/sites-available/hpcsa.conf
+server {
+        listen 80 default_server;
+        root /usr/share/nginx/html;
+
+        index index.html;
+        server_name hpcsa.com www.hpcsa.com;
+        access_log /var/log/nginx/hpcsa.com_access_log;
+        error_log /var/log/nginx/hpcsa.com_error_log;
+}
+
+a) abc.conf [Creating the vhost Server config]
+```````````````````````````````````````````````````
+# cat /etc/nginx/sites-available/abc.conf
+server {
+        listen 80;
+        root /usr/share/nginx/html/abc.com;
+
+        index index.html;
+        server_name abc.com www.abc.com;
+        access_log /var/log/nginx/abc.com_access_log;
+        error_log /var/log/nginx/abc.com_error_log;
+}
+
+3) Enabling your Server configs and Restart Nginx:
+````````````````````````````````````````````````````
+
+# ln -s /etc/nginx/sites-available/hpcsa.conf /etc/nginx/sites-enabled/hpcsa.conf
+# ln -s /etc/nginx/sites-available/abc.conf /etc/nginx/sites-enabled/abc.conf
+
+4) restart nginx service:
+`````````````````````````
+# systemctl restart nginx
+
+5) Visit:
+``````````
+http://hpcsa.com
+http://abc.com

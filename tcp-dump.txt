@@ -1,0 +1,62 @@
+# yum install tcpdump  [On RHEL/CentOS/Fedora]
+
+1. Capture Packets from Specific Interface
+``````````````````````````````````````````
+# tcpdump -i ens33
+2. Capture Only N Number of Packets
+````````````````````````````````````
+# tcpdump -c 5 -i ens33
+3. Print Captured Packets in ASCII
+```````````````````````````````````
+# tcpdump -A -i ens33
+
+4. Display Available Interfaces
+````````````````````````````````
+# tcpdump -D
+
+5. Display Captured Packets in HEX and ASCII
+`````````````````````````````````````````````
+# tcpdump -XX -i ens33
+
+6. Capture and Save Packets in a File
+``````````````````````````````````````
+# tcpdump -w 0001.pcap -i ens33
+
+7. Read Captured Packets File
+`````````````````````````````
+# tcpdump -r 0001.pcap
+
+8. Capture IP Address Packets
+``````````````````````````````
+# tcpdump -n -i ens33
+9. Capture only TCP Packets
+````````````````````````````
+# tcpdump -i ens33 tcp
+
+10. Capture Packet from Specific Port
+`````````````````````````````````````
+# tcpdump -i ens33 port 2
+
+11. Capture Packets from source IP
+``````````````````````````````````
+# tcpdump -i ens33 src x.x.x.x
+
+12. Capture Packets from destination IP
+````````````````````````````````````````
+# tcpdump -i eth0 dst x.x.x.x
+
+13. Capture all packets in any interface
+`````````````````````````````````````````
+# tcpdump -i any
+
+14. Capture specific host
+``````````````````````````
+# tcpdump -i ens33 host x.x.x.x
+
+15. Complex expressions
+````````````````````````
+# tcpdump -i lo src 127.0.0.1 and port 80
+
+
+# tcpdump -i lo "port 80 and (src x.x.x.x or src x.x.x.x)"
+

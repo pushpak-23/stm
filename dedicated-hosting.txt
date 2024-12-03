@@ -1,0 +1,46 @@
+yum install nginx -y
+systemctl start nginx
+systemctl enable nginx
+cd /usr/share/nginx/html
+
+cat > index.html
+<html>
+	<body>
+		<h1> Basic Nginx Web Server </h1>
+	</body>
+</html>
+
+systemctl restart nginx
+curl http://x.x.x.x:80
+
+Virtual DNS:
+````````````
+# vim /etc/named.conf
+
+# abc.com Forward zone
+zone "abc.com" IN {
+        type master;
+        file "for.abc.com";
+};
+
+cd /var/named
+vim for.abc.com
+
+$TTL 1D
+@       IN SOA master.hpcsa.com. dheeraj@gmail.com. (
+                                        0       ; serial
+                                        1D      ; refresh
+                                        1H      ; retry
+                                        1W      ; expire
+                                        3H )    ; minimum
+        IN      NS      master.hpcsa.com.
+abc.com.        IN      A       192.168.82.22
+www.abc.com.    IN      A       192.168.82.22
+
+systemctl restart named
+host abc.com
+host www.abc.com
+
+
+else add manually
+into /etc/hosts
